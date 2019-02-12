@@ -43,7 +43,6 @@
         nav {
             text-align: center;
         }
-
     </style>
 </head>
 
@@ -96,6 +95,20 @@
                                     <p>Pris: ${ret.pris}</p>
                                 </div>`;
 
+                        dest.insertAdjacentHTML("beforeend", template);
+                        dest.lastElementChild.addEventListener("click", åbn);
+
+                        function åbn() {
+                            document.querySelector("#indhold").innerHTML = `<articel class="ret">
+                                    <img src="imgs/small/${ret.billede}">
+                                    <h2>${ret.navn}</h2> <br>
+                                    <p>${ret.kort}</p>
+                                    <p>Pris: ${ret.pris}</p>
+                                </articel>`;
+                            document.querySelector("#popup").style.display = "block";
+
+                        }
+
                     }
 
                 })
@@ -121,7 +134,6 @@
             getJson();
 
         }
-
     </script>
 </body>
 
