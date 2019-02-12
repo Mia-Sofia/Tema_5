@@ -56,9 +56,9 @@
         <nav id="menu">
             <h2></h2>
             <button class="filter" data-kategori="alle">Alle</button>
-            <button class="filter" data-kategori="foretter">Foretter</button>
+            <button class="filter" data-kategori="forretter">Forretter</button>
             <button class="filter" data-kategori="hovedretter">Hovedretter</button>
-            <button class="filter" data-kategori="desseret">Desseret</button>
+            <button class="filter" data-kategori="desserter">Desserter</button>
             <button class="filter" data-kategori="drikkevarer">Drikkevarer</button>
             <button class="filter" data-kategori="sideorders">Side Orders</button>
 
@@ -123,11 +123,11 @@
             function filtrering() {
                 filter = this.getAttribute("data-kategori");
                 document.querySelector("h2").textContent = this.textContent;
-                document.querySelector(".filter").forEach(elm => {
+                document.querySelectorAll(".filter").forEach(elm => {
                     elm.classList.remove("valgt");
                 })
 
-                this.clasalist.add("valg");
+                this.classList.add("valgt");
                 visMenu();
             }
 
