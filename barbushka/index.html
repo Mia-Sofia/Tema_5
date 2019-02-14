@@ -1,140 +1,157 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="da">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Bistro Babushka</title>
     <style>
-        html,
-        body* {
-            margin: 0;
-            padding: 0;
+        body {
+            background-color: #cbe5ff;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3em;
+            font-family: monospace;
+        }
+
+        h2 {
+            text-align: center;
+            font-family: monospace;
+        }
+
+        nav {
+            text-align: center;
+        }
+
+        body {
+            margin: auto;
         }
 
         .ret {
-            border: 1px solid black;
-            margin: 20px;
-            padding: 15px;
-            background-color: #e8b0e4;
-        }
-
-        button {
-            font-size: 1rem;
-            background-color: mediumvioletred;
+            background-color: #8eacb9;
+            margin: 2vw;
 
         }
 
         #liste {
+            background-color: #cbe5ff;
             display: grid;
             grid-template-columns: 10fr 10fr 10fr 10fr;
-            background-color: brown;
-            background-size: contain;
         }
 
         .valgt {
-            background-color: red;
+            background-color: #d9d7d7;
+
         }
 
         img {
             width: 100%;
         }
 
-        nav {
-            text-align: center;
-        }
     </style>
 </head>
 
+
 <body>
 
-
-    <h1> Barbushka </h1>
+    <h1>Bistro Barbushka</h1>
 
     <header>
 
-        <nav id="menu">
-            <h2></h2>
+        <nav>
             <button class="filter" data-kategori="alle">Alle</button>
             <button class="filter" data-kategori="forretter">Forretter</button>
             <button class="filter" data-kategori="hovedretter">Hovedretter</button>
             <button class="filter" data-kategori="desserter">Desserter</button>
+            <button class="filter" data-kategori="sideorders">Sideorders</button>
             <button class="filter" data-kategori="drikkevarer">Drikkevarer</button>
-            <button class="filter" data-kategori="sideorders">Side Orders</button>
+
 
         </nav>
-
     </header>
 
-    <div id="liste"></div>
+    <section id="liste">
+        <article class="ret"></article>
+    </section>
+
+
+
+    <footer></footer>
 
 
     <script>
         let retter = [];
         let filter = "alle";
 
+
         document.addEventListener("DOMContentLoaded", start);
 
         function start() {
-
             let dest = document.querySelector("#liste");
             async function getJson() {
-                let jsonData = await fetch("barbushka.json");
+                let jsonData = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1jxxxFoWBuMJ1qhQ9BQIAyKHmP38XtAF9_sQr0xo5JLo");
                 retter = await jsonData.json();
-                visMenu();
+                retter.sort((a, b) => {
+                    return a.navn.localeCompare(b.navn);
+                })
+
+                visRetter();
             }
 
-            function visMenu() {
+            function visRetter() {
                 dest.innerHTML = "";
                 retter.forEach(ret => {
                     if (filter == "alle" || filter == ret.kategori) {
-                        let template = `<div class="ret">
-                                    <img src="imgs/small/${ret.billede}">
-                                    <h2>${ret.navn}</h2> <br>
-                                    <p>${ret.kort}</p>
-                                    <p>Pris: ${ret.pris}</p>
-                                </div>`;
 
+                        let template = `
+                            <div class="ret">
+                                <h2>${ret.navn}</h2> <br>
+                                <p>Ret nr: ${ret.id}</p> <br>
+                                <img src = "small/${ret.billede}-sm.jpg">
+                                <p>Pris: ${ret.pris}</p>
+                                <p>Kort beskrivelse: ${ret.kort}</p>
+                                <p>Oprindelse: ${ret.oprindelse}</p>
+
+                           </div>
+                    `;
                         dest.insertAdjacentHTML("beforeend", template);
-                        dest.lastElementChild.addEventListener("click", åbn);
-
-                        function åbn() {
-                            document.querySelector("#indhold").innerHTML = `<articel class="ret">
-                                    <img src="imgs/small/${ret.billede}">
-                                    <h2>${ret.navn}</h2> <br>
-                                    <p>${ret.kort}</p>
-                                    <p>Pris: ${ret.pris}</p>
-                                </articel>`;
-                            document.querySelector("#popup").style.display = "block";
-
-                        }
+                        dest.lastElementChild.addEventListener("click", () => {
+                            location.href = "singleViewBabushka.html?id=" + ret.id;
+                        });
 
                     }
-
                 })
 
             }
 
-
+            //fuction visPersoner slut
             document.querySelectorAll(".filter").forEach(elm => {
                 elm.addEventListener("click", filtrering);
             })
 
             function filtrering() {
                 filter = this.getAttribute("data-kategori");
-                document.querySelector("h2").textContent = this.textContent;
+                document.querySelector("h1").textContent = this.textContent;
                 document.querySelectorAll(".filter").forEach(elm => {
                     elm.classList.remove("valgt");
                 })
-
                 this.classList.add("valgt");
-                visMenu();
+                visRetter();
             }
 
-            getJson();
 
+
+
+            getJson();
         }
+
     </script>
+
+
+
+
 </body>
 
 </html>
