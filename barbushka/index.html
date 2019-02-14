@@ -91,7 +91,7 @@
         function start() {
             let dest = document.querySelector("#liste");
             async function getJson() {
-                let jsonData = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1jxxxFoWBuMJ1qhQ9BQIAyKHmP38XtAF9_sQr0xo5JLo");
+                let jsonData = await fetch("barbushka.json");
                 retter = await jsonData.json();
                 retter.sort((a, b) => {
                     return a.navn.localeCompare(b.navn);
